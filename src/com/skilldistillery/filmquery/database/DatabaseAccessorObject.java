@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
-import com.skilldistillery.filmquery.entities.Language;
 
 public class DatabaseAccessorObject implements DatabaseAccessor {
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
@@ -28,7 +27,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		
 		String user = "student";
 		String pass = "student";
-		String sql = "select * from film where id = ?;";
+		String sql = "select * FROM film JOIN language ON film.language_id = language.id WHERE film.id = ?";
 		
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -51,7 +50,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setRating(rs.getString("rating"));
 				film.setSpecialFeatures(rs.getString("special_features"));
 				film.setActorList(findActorsByFilmId(filmId));
-				film.setLanguage(findFilmLanguage(filmId));
+				film.setLanguage(rs.getString("language.name"));
+//				film.setLanguage(findFilmLanguage(filmId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -63,7 +63,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		Film film = null;
 		String user = "student";
 		String pass = "student";
-		String sql = "select * from film where title like ? OR description like ?;";
+		String sql = "select * from film JOIN language ON film.language_id = language.id WHERE title like ? OR description like ?;";
 		List<Film> films = new ArrayList<>();
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -86,7 +86,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setRating(rs.getString("rating"));
 				film.setSpecialFeatures(rs.getString("special_features"));
 				film.setActorList(findActorsByFilmId(rs.getInt("id")));
-				film.setLanguage(findFilmLanguage(rs.getInt("id")));
+				film.setLanguage(rs.getString("language.name"));
 				films.add(film);
 			}
 		} catch (Exception e) {
@@ -144,28 +144,5 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		    e.printStackTrace();
 		  }
 		  return actors;
-	}
-
-	public Language findFilmLanguage(int filmId) {
-		String user = "student";
-		String pass = "student";
-	    String sql = "SELECT language.name FROM language JOIN film ON film.language_id  = language.id"
-       + " WHERE film.id = ?";
-    	Language language = new Language();
-	    try {
-		    Connection conn = DriverManager.getConnection(URL, user, pass);
-		    PreparedStatement stmt = conn.prepareStatement(sql);
-		    stmt.setInt(1, filmId);
-		    ResultSet rs = stmt.executeQuery();
-		    while (rs.next()) {
-		    	language.setLanguage(rs.getString("name"));
-		    }
-		    rs.close();
-		    stmt.close();
-		    conn.close();
-		  } catch (SQLException e) {
-		    e.printStackTrace();
-		  }
-		return language;
 	}
 }

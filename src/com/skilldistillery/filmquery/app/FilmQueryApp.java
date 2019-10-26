@@ -24,7 +24,7 @@ public class FilmQueryApp {
   private void startUserInterface(Scanner input) {
 	  boolean run = true;
     do {
-  	  System.out.println("🍿 | Movie Lists | 🎞\n"
+  	  System.out.println("🍿 | Film Lists | 🎞\n"
       		+"1.  Look up a film by its id.\n"
       		+"2.  Look up a film by a search keyword.\n"
       		+"3.  Exit.");
@@ -44,7 +44,7 @@ public class FilmQueryApp {
   		  System.out.println("\nInvalid selection.  Please enter \"1\" or \"2\".");
   		  break;
   	  }
-    } while (run == true);
+    } while (run);
   }
   
   // METHODS BELOW WILL PRINT PRINT FILM BY ID OR SEARCH QUERY.
