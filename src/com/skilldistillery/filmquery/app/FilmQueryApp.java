@@ -32,7 +32,7 @@ public class FilmQueryApp {
   	  String userSelection = input.next();
   	  switch (userSelection) {
   	  case "1":
-  		  System.out.println("you got it");
+  		  printFilmById(input);
   		  break;
   	  case "2":
   		  System.out.println("ok");
@@ -42,10 +42,24 @@ public class FilmQueryApp {
   		  run = false;
   		  break;
   	  default:  
-  		  System.out.println("Invalid selection.  Please enter \"1\" or \"2\".");
+  		  System.out.println("\nInvalid selection.  Please enter \"1\" or \"2\".");
   		  break;
   	  }
     } while (run == true);
+  }
+  
+  private void printFilmById(Scanner input) {
+	  boolean run = true;
+	  System.out.print("Please enter film Id: ");
+	  Film film = db.findFilmById(input.nextInt());
+	  if (film != null) {
+	  System.out.println("\nTitle: " + film.getTitle()
+			  + "\nYear: " + film.getReleaseYear()
+			  + "\nRating: " + film.getRating()
+			  + "\nDecription: " + film.getDescription() + "\n");
+	  } else {
+		  System.out.println("\nThat movie id does not exist.  Try agian.");
+	  }
   }
   
   //TEST METHODS
