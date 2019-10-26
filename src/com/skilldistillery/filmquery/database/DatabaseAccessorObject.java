@@ -27,7 +27,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		
 		String user = "student";
 		String pass = "student";
-		String sql = "select * FROM film JOIN language ON film.language_id = language.id WHERE film.id = ?";
+		String sql = "select * FROM film \n" + 
+				"JOIN language ON film.language_id = language.id\n" + 
+				"JOIN film_category ON film.id = film_category.film_id\n" + 
+				"JOIN category ON film_category.category_id = category.id\n" + 
+				"WHERE film.id = ?;";
 		
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -51,7 +55,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setSpecialFeatures(rs.getString("special_features"));
 				film.setActorList(findActorsByFilmId(filmId));
 				film.setLanguage(rs.getString("language.name"));
-//				film.setLanguage(findFilmLanguage(filmId));
+				film.setCategory(rs.getString("category.name"));
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -99,13 +104,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		Actor actor = null;
 		String user = "student";
 		String pass = "student";
-		String sql = "select * from actor where id = ?;";
+		String sql = "SELECT * FROM actor WHERE id = ?;";
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			PreparedStatement pst = conn.prepareStatement(sql);
 			pst.setInt(1,actorId);
 			ResultSet rs = pst.executeQuery();
-
 			while (rs.next()) {
 				actor = new Actor();
 				actor.setId(rs.getInt("id"));
@@ -121,9 +125,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	public List<Actor> findActorsByFilmId(int filmId) {
 		String user = "student";
 		String pass = "student";
-	    String sql = "SELECT actor.id, actor.first_name, actor.last_name FROM film_actor JOIN film ON film.id = film_actor.film_id "
+	    String sql = "SELECT * FROM film_actor "
+	    		+ "JOIN film ON film.id = film_actor.film_id "
 	    		+ "JOIN actor on actor.id = film_actor.actor_id"
-       + " WHERE film.id = ?";
+	    		+ " WHERE film.id = ?";
 		List<Actor> actors = new ArrayList<>();
 		  try {
 		    Connection conn = DriverManager.getConnection(URL, user, pass);

@@ -78,7 +78,8 @@ public class FilmQueryApp {
 	  + "\nYear: " + film.getReleaseYear()
 	  + "\nRating: " + film.getRating()
 	  + "\nDecription: " + film.getDescription()
-	  + "\nLanguage: " + film.getLanguage());
+	  + "\nLanguage: " + film.getLanguage()
+	  + "\nCategory: " + film.getCategory());
 	  printActors(film.getActorList());
   }
   
