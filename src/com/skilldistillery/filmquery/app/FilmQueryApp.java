@@ -12,7 +12,6 @@ public class FilmQueryApp {
 
   public static void main(String[] args) {
     FilmQueryApp app = new FilmQueryApp();
-//    app.test();
     app.launch();
   }
   
@@ -35,7 +34,7 @@ public class FilmQueryApp {
   		  printFilmById(input);
   		  break;
   	  case "2":
-  		  System.out.println("ok");
+  		  System.out.println("ok");  // EDIT OUT WITH USER STORY 3.
   		  break;
   	  case "3":
   		  System.out.println("Goodbye!");
@@ -48,6 +47,7 @@ public class FilmQueryApp {
     } while (run == true);
   }
   
+  // METHODS BELOW WILL PRINT PRINT FILM BY ID OR SEARCH QUERY.
   private void printFilmById(Scanner input) {
 	  boolean run = true;
 	  System.out.print("Please enter film Id: ");
@@ -59,6 +59,7 @@ public class FilmQueryApp {
 	  }
   }
   
+  // METHODS BELOW WILL PRINT FILM DATA
   private void printFilm(Film film) {
 	  System.out.println("\nTitle: " + film.getTitle()
 	  + "\nYear: " + film.getReleaseYear()
@@ -78,20 +79,4 @@ public class FilmQueryApp {
 		  }
 	  }
   }
-  
-  //TEST METHODS
-  
-  //private Scanner kb = new Scanner(System.in);
-//private int userInput() {
-//  System.out.println("Enter a movie id: ");
-//  int a = kb.nextInt();
-//  return a;
-//}
-//
-
-//private void test() {
-//Film film = db.findFilmById(userInput());
-//System.out.println(film);
-//}
-
 }
