@@ -26,5 +26,4 @@ class DatabaseAccessTests {
     Film f = db.findFilmById(-42);
     assertNull(f);
   }
-
 }

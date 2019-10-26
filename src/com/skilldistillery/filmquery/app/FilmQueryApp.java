@@ -53,15 +53,39 @@ public class FilmQueryApp {
 	  Film film = db.findFilmById(input.nextInt());
 	  if (film != null) {
 		  printFilm(film);
+		  printSubMenu(input, film);
 	  } else {
 		  System.out.println("\nThat movie id does not exist.  Try agian.");
 	  }
   }
   
+  private void printSubMenu(Scanner input, Film film) {
+	  System.out.println("Would you like to:\n"
+	  		+ "1. View all film details?\n"
+//	  		+ "2. See available copies?\n"
+	  		+ "2. Return to main menu?\n");
+	  //boolean run = true;
+	  input.nextLine();
+	  String userSelection = input.nextLine();
+	  System.out.println(userSelection);
+	  switch(userSelection) {
+	  case "1":
+		  System.out.println(film + "\n");
+		  break;
+	  case "2":
+		  break;
+//	  case "3":
+//		  break;
+	  default:
+		  System.out.println("\nInvalid selection. Returning to main menu."); //Please enter \"1\", \"2\", or \"3\"");
+		  break;
+	  }
+  }
+  
   private void printFilmByKeyword(Scanner input) {
 	  System.out.print("Please enter keyword: ");
-	  String userInput = input.next();
 	  input.nextLine();
+	  String userInput = input.nextLine(); // changed to search direct
 	  List<Film> films = db.findFilmByKeyword(userInput);
 	  if (films.size() != 0) {
 		  for (Film film : films) {
