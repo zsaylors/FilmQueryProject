@@ -1,5 +1,7 @@
 package com.skilldistillery.filmquery.entities;
 
+import java.util.List;
+
 public class Film {
 	//F I E L D S
 	private int id;
@@ -13,6 +15,7 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
+	private List<Actor> filmActors;
 	
 	//C O N S T R U C T O R S
 	public Film() {
@@ -20,7 +23,7 @@ public class Film {
 	}
 	
 	public Film(int id, String title, String description, int releaseYear, int languageId, int rentalDuration,
-			double rentalRate, int length, double replacementCost, String rating, String specialFeatures) {
+			double rentalRate, int length, double replacementCost, String rating, String specialFeatures, List<Actor> filmActors) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -33,6 +36,7 @@ public class Film {
 		this.replacementCost = replacementCost;
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
+		this.filmActors = filmActors;
 	}
 	
 	//M E T H O D S
@@ -102,7 +106,14 @@ public class Film {
 	public void setSpecialFeatures(String specialFeatures) {
 		this.specialFeatures = specialFeatures;
 	}
-
+	public List<Actor> getActorList() {
+		return filmActors;
+	}
+	public void setActorList(List<Actor> filmActors) {
+		this.filmActors = filmActors;
+	}
+	
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -128,6 +139,8 @@ public class Film {
 		builder.append(rating);
 		builder.append(", specialFeatures=");
 		builder.append(specialFeatures);
+		builder.append(", actors=");
+		builder.append(filmActors);
 		builder.append("]");
 		return builder.toString();
 	}
