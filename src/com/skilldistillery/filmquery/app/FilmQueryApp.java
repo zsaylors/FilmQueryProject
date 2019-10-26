@@ -63,14 +63,13 @@ public class FilmQueryApp {
 	  String userInput = input.next();
 	  input.nextLine();
 	  List<Film> films = db.findFilmByKeyword(userInput);
-//	  if (film != null) {
+	  if (films.size() != 0) {
 		  for (Film film : films) {
 			  printFilm(film);
-			  System.out.println(films.size());
 		}
-//	  } else {
-//		  System.out.println("\nThat movie id does not exist.  Try agian.");
-//	  }
+	  } else {
+		  System.out.println("\nNo movies with that keyword exist.  Try agian.\n");
+	  }
   }
   
   // METHODS BELOW WILL PRINT FILM DATA
@@ -78,9 +77,9 @@ public class FilmQueryApp {
 	  System.out.println("\nTitle: " + film.getTitle()
 	  + "\nYear: " + film.getReleaseYear()
 	  + "\nRating: " + film.getRating()
-	  + "\nDecription: " + film.getDescription());
-//	  + "\nLanguage: " + film.getLanguage());
-//	  printActors(film.getActorList());
+	  + "\nDecription: " + film.getDescription()
+	  + "\nLanguage: " + film.getLanguage());
+	  printActors(film.getActorList());
   }
   
   private void printActors(List<Actor> actorList) {

@@ -64,21 +64,13 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		String user = "student";
 		String pass = "student";
 		String sql = "select * from film where title like ? OR description like ?;";
-		
 		List<Film> films = new ArrayList<>();
-		
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			PreparedStatement pst = conn.prepareStatement(sql);
 			pst.setString(1, "%" + keyword + "%");
 			pst.setString(2, "%" + keyword + "%");
 			ResultSet rs = pst.executeQuery();
-			
-			System.out.println("**********debug");
-			System.out.println(keyword);
-			System.out.println("**********debug2");
-			System.out.println(pst);
-
 			while (rs.next()) {
 				film = new Film();
 				film.setId(rs.getInt("id"));
@@ -93,8 +85,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setReplacementCost(rs.getDouble("replacement_cost"));
 				film.setRating(rs.getString("rating"));
 				film.setSpecialFeatures(rs.getString("special_features"));
-//				film.setActorList(findActorsByFilmId(filmId));
-//				film.setLanguage(findFilmLanguage(filmId));
+				film.setActorList(findActorsByFilmId(rs.getInt("id")));
+				film.setLanguage(findFilmLanguage(rs.getInt("id")));
 				films.add(film);
 			}
 		} catch (Exception e) {
@@ -105,11 +97,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	public Actor findActorById(int actorId) {
 		Actor actor = null;
-		
 		String user = "student";
 		String pass = "student";
 		String sql = "select * from actor where id = ?;";
-		
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			PreparedStatement pst = conn.prepareStatement(sql);
@@ -121,21 +111,19 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				actor.setId(rs.getInt("id"));
 				actor.setFirst_name(rs.getString("first_name"));
 				actor.setLast_name(rs.getString("last_name"));
-		
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return actor;
 	}
-//
+
 	public List<Actor> findActorsByFilmId(int filmId) {
 		String user = "student";
 		String pass = "student";
 	    String sql = "SELECT actor.id, actor.first_name, actor.last_name FROM film_actor JOIN film ON film.id = film_actor.film_id "
 	    		+ "JOIN actor on actor.id = film_actor.actor_id"
        + " WHERE film.id = ?";
-		
 		List<Actor> actors = new ArrayList<>();
 		  try {
 		    Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -163,7 +151,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		String pass = "student";
 	    String sql = "SELECT language.name FROM language JOIN film ON film.language_id  = language.id"
        + " WHERE film.id = ?";
-	    
     	Language language = new Language();
 	    try {
 		    Connection conn = DriverManager.getConnection(URL, user, pass);
