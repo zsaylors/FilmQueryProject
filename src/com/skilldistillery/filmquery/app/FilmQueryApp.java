@@ -53,12 +53,29 @@ public class FilmQueryApp {
 	  System.out.print("Please enter film Id: ");
 	  Film film = db.findFilmById(input.nextInt());
 	  if (film != null) {
-	  System.out.println("\nTitle: " + film.getTitle()
-			  + "\nYear: " + film.getReleaseYear()
-			  + "\nRating: " + film.getRating()
-			  + "\nDecription: " + film.getDescription() + "\n");
+		  printFilm(film);
 	  } else {
 		  System.out.println("\nThat movie id does not exist.  Try agian.");
+	  }
+  }
+  
+  private void printFilm(Film film) {
+	  System.out.println("\nTitle: " + film.getTitle()
+	  + "\nYear: " + film.getReleaseYear()
+	  + "\nRating: " + film.getRating()
+	  + "\nDecription: " + film.getDescription());
+	  printActors(film.getActorList());
+  }
+  
+  private void printActors(List<Actor> actorList) {
+	  System.out.print("Actors: ");
+	  for (int i = 0; i < actorList.size(); i++) {
+		  if (i < actorList.size() - 1) {
+			  System.out.print(actorList.get(i).getFirst_name() + " " + actorList.get(i).getLast_name() + ", ");
+		  }
+		  else {
+			  System.out.print(actorList.get(i).getFirst_name() + " " + actorList.get(i).getLast_name() + ".\n\n");
+		  }
 	  }
   }
   
