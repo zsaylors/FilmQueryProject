@@ -34,7 +34,7 @@ public class FilmQueryApp {
   		  printFilmById(input);
   		  break;
   	  case "2":
-  		  System.out.println("ok");  // EDIT OUT WITH USER STORY 3.
+  		  printFilmByKeyword(input);
   		  break;
   	  case "3":
   		  System.out.println("Goodbye!");
@@ -49,7 +49,6 @@ public class FilmQueryApp {
   
   // METHODS BELOW WILL PRINT PRINT FILM BY ID OR SEARCH QUERY.
   private void printFilmById(Scanner input) {
-	  boolean run = true;
 	  System.out.print("Please enter film Id: ");
 	  Film film = db.findFilmById(input.nextInt());
 	  if (film != null) {
@@ -59,14 +58,29 @@ public class FilmQueryApp {
 	  }
   }
   
+  private void printFilmByKeyword(Scanner input) {
+	  System.out.print("Please enter keyword: ");
+	  String userInput = input.next();
+	  input.nextLine();
+	  List<Film> films = db.findFilmByKeyword(userInput);
+//	  if (film != null) {
+		  for (Film film : films) {
+			  printFilm(film);
+			  System.out.println(films.size());
+		}
+//	  } else {
+//		  System.out.println("\nThat movie id does not exist.  Try agian.");
+//	  }
+  }
+  
   // METHODS BELOW WILL PRINT FILM DATA
   private void printFilm(Film film) {
 	  System.out.println("\nTitle: " + film.getTitle()
 	  + "\nYear: " + film.getReleaseYear()
 	  + "\nRating: " + film.getRating()
-	  + "\nDecription: " + film.getDescription()
-	  + "\nLanguage: " + film.getLanguage());
-	  printActors(film.getActorList());
+	  + "\nDecription: " + film.getDescription());
+//	  + "\nLanguage: " + film.getLanguage());
+//	  printActors(film.getActorList());
   }
   
   private void printActors(List<Actor> actorList) {
