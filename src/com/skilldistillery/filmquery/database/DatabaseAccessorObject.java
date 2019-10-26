@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
+import com.skilldistillery.filmquery.entities.Language;
 
 public class DatabaseAccessorObject implements DatabaseAccessor {
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
@@ -50,6 +51,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film.setRating(rs.getString("rating"));
 				film.setSpecialFeatures(rs.getString("special_features"));
 				film.setActorList(findActorsByFilmId(filmId));
+				film.setLanguage(findFilmLanguage(filmId));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,4 +114,27 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		  return actors;
 	}
 
+	public Language findFilmLanguage(int filmId) {
+		String user = "student";
+		String pass = "student";
+	    String sql = "SELECT language.name FROM language JOIN film ON film.language_id  = language.id"
+       + " WHERE film.id = ?";
+	    
+    	Language language = new Language();
+	    try {
+		    Connection conn = DriverManager.getConnection(URL, user, pass);
+		    PreparedStatement stmt = conn.prepareStatement(sql);
+		    stmt.setInt(1, filmId);
+		    ResultSet rs = stmt.executeQuery();
+		    while (rs.next()) {
+		    	language.setLanguage(rs.getString("name"));
+		    }
+		    rs.close();
+		    stmt.close();
+		    conn.close();
+		  } catch (SQLException e) {
+		    e.printStackTrace();
+		  }
+		return language;
+	}
 }

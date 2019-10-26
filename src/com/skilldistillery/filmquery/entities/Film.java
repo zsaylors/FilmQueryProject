@@ -9,6 +9,7 @@ public class Film {
 	private String description;
 	private int releaseYear;
 	private int languageId;
+	private Language language;
 	private int rentalDuration;
 	private double rentalRate;
 	private int length;
@@ -23,7 +24,8 @@ public class Film {
 	}
 	
 	public Film(int id, String title, String description, int releaseYear, int languageId, int rentalDuration,
-			double rentalRate, int length, double replacementCost, String rating, String specialFeatures, List<Actor> filmActors) {
+			double rentalRate, int length, double replacementCost, String rating, String specialFeatures, List<Actor> filmActors,
+			Language language) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -37,6 +39,7 @@ public class Film {
 		this.rating = rating;
 		this.specialFeatures = specialFeatures;
 		this.filmActors = filmActors;
+		this.language = language;
 	}
 	
 	//M E T H O D S
@@ -112,8 +115,13 @@ public class Film {
 	public void setActorList(List<Actor> filmActors) {
 		this.filmActors = filmActors;
 	}
-	
-	
+	public Language getLanguage() {
+		return language;
+	}
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

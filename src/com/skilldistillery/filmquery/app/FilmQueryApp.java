@@ -64,7 +64,8 @@ public class FilmQueryApp {
 	  System.out.println("\nTitle: " + film.getTitle()
 	  + "\nYear: " + film.getReleaseYear()
 	  + "\nRating: " + film.getRating()
-	  + "\nDecription: " + film.getDescription());
+	  + "\nDecription: " + film.getDescription()
+	  + "\nLanguage: " + film.getLanguage());
 	  printActors(film.getActorList());
   }
   
