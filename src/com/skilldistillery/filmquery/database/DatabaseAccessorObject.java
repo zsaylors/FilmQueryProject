@@ -14,6 +14,8 @@ import com.skilldistillery.filmquery.entities.Store;
 
 public class DatabaseAccessorObject implements DatabaseAccessor {
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
+	private String user = "student";
+	private String pass = "student";
 
 	static {
 		try {
@@ -24,7 +26,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	}
 	
 	//STANDARD SQL STRING FOR ALL FILMS
-	//Note: Specific joins and where statements concatenated in respective methods.
+	//Note: Specific where statements are concatenated in their respective methods.
 	//added to not repeat and ease to edit in future.
 	private String setSql() {
 		return "select * FROM film \n" + 
@@ -60,9 +62,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public Film findFilmById(int filmId) {
 		Film film = null;
-		String user = "student";
-		String pass = "student";
-		String sql = setSql() + "WHERE film.id = ?;"; //where checks for specific id only giving one film output.
+		String sql = setSql() + "WHERE film.id = ?;";
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			PreparedStatement pst = conn.prepareStatement(sql);
@@ -81,9 +81,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	//second menu item in FilmQueryApp.
 	public List<Film> findFilmByKeyword(String keyword) {
 		Film film = null;
-		String user = "student";
-		String pass = "student";
-		String sql = setSql() + "WHERE title like ? OR description like ?;"; //where checks for keywords which may give multiple film outputs.
+		String sql = setSql() + "WHERE title like ? OR description like ?;";
 		List<Film> films = new ArrayList<>();
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -102,11 +100,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	}
 	
 	//FINDS ACTOR
-	//-currently- unused.
+	//currently unused.
 	public Actor findActorById(int actorId) {
 		Actor actor = null;
-		String user = "student";
-		String pass = "student";
 		String sql = "SELECT * FROM actor WHERE id = ?;";
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -128,13 +124,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	//CREATES AN ACTOR LIST SPECIFIC TO A FILM.
 	//Added in the film object methods above.
 	public List<Actor> findActorsByFilmId(int filmId) {
-		String user = "student";
-		String pass = "student";
-	    String sql = "SELECT * FROM film_actor "
+		List<Actor> actors = new ArrayList<>();
+		String sql = "SELECT * FROM film_actor "
 	    		+ "JOIN film ON film.id = film_actor.film_id "
 	    		+ "JOIN actor on actor.id = film_actor.actor_id"
 	    		+ " WHERE film.id = ?";
-		List<Actor> actors = new ArrayList<>();
 		  try {
 		    Connection conn = DriverManager.getConnection(URL, user, pass);
 		    PreparedStatement stmt = conn.prepareStatement(sql);
@@ -159,14 +153,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	//CREATES AN INVENTORY LIST SPECIFIC TO A FILM.
 	//This is used in the sub menu (option 2) in FilmQueryApp.  Prints all film locations and conditions.
 	public List<Inventory> findInventory(int filmId) {
-		String user = "student";
-		String pass = "student";
+		List<Inventory> inventory = new ArrayList<>();
+	    Inventory inv = null;
 	    String sql = "SELECT * FROM inventory_item "
 	    		+ "JOIN film ON film.id = inventory_item.film_id \n" //adds inventory.  May need it's own method.
 	    		+ "JOIN store_list ON store_list.store_id = inventory_item.store_id\n"
 	    		+ "WHERE film.id = ?";
-		List<Inventory> inventory = new ArrayList<>();
-	    Inventory inv = new Inventory();  
 	    try {
 		    Connection conn = DriverManager.getConnection(URL, user, pass);
 		    PreparedStatement stmt = conn.prepareStatement(sql);
@@ -189,8 +181,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	//CREATES A STORE OBJECT TO BE USED WITH INVENTORY TO FIND LOCATION.
 	//Added in findInventory method above.
 	public Store findStores(int storeId) {
-		String user = "student";
-		String pass = "student";
 	    String sql = "SELECT * FROM store_list WHERE store_list.store_id = ?";
 	    Store store = null;
 	    try {

@@ -1,5 +1,6 @@
 package com.skilldistillery.filmquery.app;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
@@ -49,18 +50,24 @@ public class FilmQueryApp {
 	// METHODS BELOW WILL PRINT PRINT FILM BY ID OR SEARCH QUERY.
 	private void printFilmById(Scanner input) {
 		System.out.print("Please enter film Id: ");
-		Film film = db.findFilmById(input.nextInt());
-		if (film != null) {
-			printFilm(film);
-			printSubMenu(input, film);
-		} else {
-			System.out.println("\nThat movie id does not exist.  Try agian.");
+		try {
+			Film film = db.findFilmById(input.nextInt());
+			if (film != null) {
+				printFilm(film);
+				printSubMenu(input, film);
+			} else {
+				System.out.println("\nThat movie id does not exist.  Try agian.");
+			}
+		} catch (InputMismatchException e) {
+			System.out.println("Invalid entry.  Try again");
+			input.next();
 		}
 	}
 
-	//Following method is a sub menu of printFilmById() allowing the user to pick all information using the toString, or seeing inv data.
+	// Following method is a sub menu of printFilmById() allowing the user to pick
+	// all information using the toString, or seeing inv data.
 	private void printSubMenu(Scanner input, Film film) {
-		boolean run = true;	
+		boolean run = true;
 		input.nextLine();
 		do {
 			System.out.println("Would you like to:\n" + "1. View all film details?\n" + "2. See available copies?\n"
@@ -79,7 +86,7 @@ public class FilmQueryApp {
 				run = false;
 				break;
 			default:
-				System.out.println("\nPlease enter \"1\", \"2\", or \"3\"");
+				System.out.println("\nInvalid selection.  Please enter \"1\", \"2\", or \"3\"");
 				break;
 			}
 		} while (run);
@@ -88,22 +95,23 @@ public class FilmQueryApp {
 	private void printFilmByKeyword(Scanner input) {
 		System.out.print("Please enter keyword: ");
 		input.nextLine();
-		String userInput = input.nextLine(); // changed to search direct
+		String userInput = input.nextLine();
 		List<Film> films = db.findFilmByKeyword(userInput);
 		if (films.size() != 0) {
 			for (Film film : films) {
 				printFilm(film);
 			}
 		} else {
-			System.out.println("\nNo movies with that keyword exist.  Try agian.\n");
+			System.out.println("\nNo movie with the keyword(s) exists.  Try agian.\n");
 		}
 	}
 
-	// METHODS BELOW WILL PRINT FILM DATA TO ABOVE METHODS, "OVERWRITING" THE TOSTRING.  
-	// NOTE: toString's could have been used, but these were created to provide a more user friendly console output.
+	// METHODS BELOW WILL PRINT FILM DATA TO ABOVE METHODS, "OVERWRITING" THE TOSTRING.
+	// NOTE: toString's could have been used, but these were created to provide a
+	// more user friendly console output.
 	private void printFilm(Film film) {
 		System.out.println("\nTitle: " + film.getTitle() + "\nYear: " + film.getReleaseYear() + "\nRating: "
-				+ film.getRating() + "\nDecription: " + film.getDescription() + "\nLanguage: " + film.getLanguage()
+				+ film.getRating() + "\nDescription: " + film.getDescription() + "\nLanguage: " + film.getLanguage()
 				+ "\nCategory: " + film.getCategory());
 		printActors(film.getActorList());
 	}
