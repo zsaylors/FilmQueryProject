@@ -32,7 +32,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		return "select * FROM film \n" + 
 				"JOIN language ON film.language_id = language.id\n" +  // adds language category
 				"JOIN film_category ON film.id = film_category.film_id\n" +  //adds film category
-				"JOIN category ON film_category.category_id = category.id\n";  //adds film category
+				"JOIN category ON film_category.category_id = category.id\n";  //adds film category		
 	}
 	
 	//CREATES FILM OBJECT
@@ -81,7 +81,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	//second menu item in FilmQueryApp.
 	public List<Film> findFilmByKeyword(String keyword) {
 		Film film = null;
-		String sql = setSql() + "WHERE title like ? OR description like ?;";
+		String sql = setSql() + "WHERE film.title like ? OR film.description like ?;";
 		List<Film> films = new ArrayList<>();
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
