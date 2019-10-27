@@ -7,9 +7,7 @@ public class Actor {
 	private String last_name;
 	
 	//C O N S T R U C T O R S
-	public Actor() {
-		
-	}
+	public Actor() {}
 	
 	public Actor(int id, String first_name, String last_name) {
 		super();

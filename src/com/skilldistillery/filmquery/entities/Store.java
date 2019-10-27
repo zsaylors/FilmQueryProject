@@ -10,6 +10,8 @@ public class Store {
 	private String postalCode;
 	
 	//C O N S T R U C T O R S
+	public Store() {}
+	
 	public Store(int storeId, int mangerId, String address, String city, String state, String postalCode) {
 		super();
 		this.storeId = storeId;
