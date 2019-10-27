@@ -120,8 +120,8 @@ public class Film {
 	public String getLanguage() {
 		return language;
 	}
-	public void setLanguage(String string) {
-		this.language = string;
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 	public String getCategory() {
 		return category;
@@ -143,6 +143,8 @@ public class Film {
 		builder.append(releaseYear);
 		builder.append(", languageId=");
 		builder.append(languageId);
+		builder.append(", language=");
+		builder.append(language);
 		builder.append(", rentalDuration=");
 		builder.append(rentalDuration);
 		builder.append(", rentalRate=");
@@ -155,8 +157,10 @@ public class Film {
 		builder.append(rating);
 		builder.append(", specialFeatures=");
 		builder.append(specialFeatures);
-		builder.append(", actors=");
+		builder.append(", filmActors=");
 		builder.append(filmActors);
+		builder.append(", category=");
+		builder.append(category);
 		builder.append("]");
 		return builder.toString();
 	}
@@ -165,8 +169,11 @@ public class Film {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((filmActors == null) ? 0 : filmActors.hashCode());
 		result = prime * result + id;
+		result = prime * result + ((language == null) ? 0 : language.hashCode());
 		result = prime * result + languageId;
 		result = prime * result + length;
 		result = prime * result + ((rating == null) ? 0 : rating.hashCode());
@@ -191,12 +198,27 @@ public class Film {
 		if (getClass() != obj.getClass())
 			return false;
 		Film other = (Film) obj;
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
+			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
+		if (filmActors == null) {
+			if (other.filmActors != null)
+				return false;
+		} else if (!filmActors.equals(other.filmActors))
+			return false;
 		if (id != other.id)
+			return false;
+		if (language == null) {
+			if (other.language != null)
+				return false;
+		} else if (!language.equals(other.language))
 			return false;
 		if (languageId != other.languageId)
 			return false;
@@ -226,5 +248,5 @@ public class Film {
 		} else if (!title.equals(other.title))
 			return false;
 		return true;
-	}
+	}	
 }

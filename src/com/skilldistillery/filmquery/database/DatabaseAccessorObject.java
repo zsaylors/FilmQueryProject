@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
+import com.skilldistillery.filmquery.entities.Inventory;
+import com.skilldistillery.filmquery.entities.Store;
 
 public class DatabaseAccessorObject implements DatabaseAccessor {
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid?useSSL=false";
@@ -21,6 +23,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 	}
 	
+	//STANDARD SQL STRING FOR ALL FILMS
+	//Note: Specific joins and where statements concatenated in respective methods.
+	//added to not repeat and ease to edit in future.
 	private String setSql() {
 		return "select * FROM film \n" + 
 				"JOIN language ON film.language_id = language.id\n" +  // adds language category
@@ -28,6 +33,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				"JOIN category ON film_category.category_id = category.id\n";  //adds film category
 	}
 	
+	//CREATES FILM OBJECT
+	//added to not repeat and ease to edit in future.
 	private Film createFilm(ResultSet rs, Film film, int filmId) throws SQLException {
 		film = new Film();
 		film.setId(rs.getInt("id"));
@@ -48,12 +55,14 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		return film;
 	}
 	
+	//FINDS FILM BY ID
+	//first menu item in FilmQueryApp.
 	@Override
 	public Film findFilmById(int filmId) {
 		Film film = null;
 		String user = "student";
 		String pass = "student";
-		String sql = setSql() + "WHERE film.id = ?;";
+		String sql = setSql() + "WHERE film.id = ?;"; //where checks for specific id only giving one film output.
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			PreparedStatement pst = conn.prepareStatement(sql);
@@ -68,11 +77,13 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		return film;
 	}
 	
+	//FINDS FILM BY KEYWORD
+	//second menu item in FilmQueryApp.
 	public List<Film> findFilmByKeyword(String keyword) {
 		Film film = null;
 		String user = "student";
 		String pass = "student";
-		String sql = setSql() + "WHERE title like ? OR description like ?;";
+		String sql = setSql() + "WHERE title like ? OR description like ?;"; //where checks for keywords which may give multiple film outputs.
 		List<Film> films = new ArrayList<>();
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
@@ -89,7 +100,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		}
 		return films;
 	}
-
+	
+	//FINDS ACTOR
+	//-currently- unused.
 	public Actor findActorById(int actorId) {
 		Actor actor = null;
 		String user = "student";
@@ -112,6 +125,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		return actor;
 	}
 
+	//CREATES AN ACTOR LIST SPECIFIC TO A FILM.
+	//Added in the film object methods above.
 	public List<Actor> findActorsByFilmId(int filmId) {
 		String user = "student";
 		String pass = "student";
@@ -141,7 +156,58 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		  return actors;
 	}
 	
-//	"JOIN inventory_item ON film.id = inventory_item.film_id \n" + //adds inventory.  May need it's own method.
-//	"JOIN store_list ON store_list.store_id = inventory_item.store_id\n";	
-//	System.out.printf(rs.getString("store_list.address") + "\t" + rs.getString("inventory_item.media_condition"));
+	//CREATES AN INVENTORY LIST SPECIFIC TO A FILM.
+	//This is used in the sub menu (option 2) in FilmQueryApp.  Prints all film locations and conditions.
+	public List<Inventory> findInventory(int filmId) {
+		String user = "student";
+		String pass = "student";
+	    String sql = "SELECT * FROM inventory_item "
+	    		+ "JOIN film ON film.id = inventory_item.film_id \n" //adds inventory.  May need it's own method.
+	    		+ "JOIN store_list ON store_list.store_id = inventory_item.store_id\n"
+	    		+ "WHERE film.id = ?";
+		List<Inventory> inventory = new ArrayList<>();
+	    Inventory inv = new Inventory();  
+	    try {
+		    Connection conn = DriverManager.getConnection(URL, user, pass);
+		    PreparedStatement stmt = conn.prepareStatement(sql);
+		    stmt.setInt(1, filmId);
+		    ResultSet rs = stmt.executeQuery();
+		    while (rs.next()) {
+		    	inv = new Inventory(rs.getInt("id"), rs.getInt("film_id"), rs.getInt("store_id"),
+		    			rs.getString("media_condition"), rs.getString("last_update"), findStores(rs.getInt("store_id")));
+		    	inventory.add(inv);
+		    }
+		    rs.close();
+		    stmt.close();
+		    conn.close();
+		  } catch (SQLException e) {
+		    e.printStackTrace();
+		  }
+		return inventory;
+	}
+	
+	//CREATES A STORE OBJECT TO BE USED WITH INVENTORY TO FIND LOCATION.
+	//Added in findInventory method above.
+	public Store findStores(int storeId) {
+		String user = "student";
+		String pass = "student";
+	    String sql = "SELECT * FROM store_list WHERE store_list.store_id = ?";
+	    Store store = null;
+	    try {
+		    Connection conn = DriverManager.getConnection(URL, user, pass);
+		    PreparedStatement stmt = conn.prepareStatement(sql);
+		    stmt.setInt(1, storeId);
+		    ResultSet rs = stmt.executeQuery();
+		    while (rs.next()) {
+		    	store = new Store(rs.getInt("store_id"), rs.getInt("manager_id"), rs.getString("address"), 
+		    			rs.getString("city"), rs.getString("state"), rs.getString("postal_code"));
+		    }
+		    rs.close();
+		    stmt.close();
+		    conn.close();
+		  } catch (SQLException e) {
+		    e.printStackTrace();
+		  }
+		  return store;
+	}
 }
