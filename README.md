@@ -13,6 +13,7 @@ When opened, the user will be presented with a menu that displays three options 
 3.  Exit.
 ```
 
+
 #### Option 1: Look up a film by its id.
 A user may input an id of a film.  If the id does not exist in the database the program will return the user to the main menu.  When a correct id is entered, the user will receive the title, year, rating, description, language, category, and a list of actors.  Example output is displayed below.
 ```
@@ -40,8 +41,10 @@ Would you like to:
 
 3. Return to main menu? - This will bring the user back to the main menu.
 
+
 #### Option 2: Look up a film by a search keyword.
-The user will be prompted to type a keyword.  This may be a single letter, a single word, or a phrase.  The program will search for and exact match in the film title or film description.  All films that have matching keywords will display.
+The user will be prompted to type a keyword.  This may be a single letter, a single word, or a phrase.  The program will search for and exact match in the film title or description.  All films that have matching keywords will display.
+
 
 #### Option 3: Exit.
 Choosing exit will terminate the program.
@@ -61,23 +64,20 @@ From FilmQueryApp, the program can be run as a Java Program through the IDE's co
 
 
 ### Technologies and Topics Applied
-* **CRUD** - In this project only the read aspect of CRUD was applied.  I believe next week the project will be expanded to include all aspects of this CRUD principle.
+* **CRUD** - In this project, only the read aspect of CRUD was applied.  I believe next week the project will be expanded to include all aspects of this CRUD principle.
 
 * **Java Data Base Connectivity (JDBC)** - Reading the database was accomplished by:
-1.  Connecting by `DriverManager.getConnection` and `getConnection` with arguments of url, username, and password.
+1.  Connecting by `DriverManager.getConnection` and `getConnection` with the arguments url, username, and password.
 2.  Utilizing `Class.forName` to ensure driver class is loaded.
-3.  Closing connections when finished using them.
+3.  Closing connections when they are no longer used.
 
-* **Maven** - A XML configuration file was created, and dependencies were added the library `mysql-connector-java` with its respective groupId, artifactId, and version tags.
+* **Maven** - A XML configuration file was created, and with dependencies, added the library `mysql-connector-java` with its respective groupId, artifactId, and version tag.
 
-* **SQL Queries**
-PreparedStatements objects were created.  Then a `ResultSet` object was created with `.executeQuery`.  The `ResultSet` could then retrieve rows of data.
+* **SQL Queries** - PreparedStatements objects were created.  Then, a `ResultSet` object was created with `executeQuery`.  The `ResultSet` was then able to retrieve a row of data during each iteration of a `while loop`.
 
-* **SQL Injection**
-To prevent SQL injection, PreparedStatements were used with bind variables `?` instead of using regular statements that concatenate runtime data.  Using the prepared statement also prevents the query from having to parse, compile, and execute each time, making the program more efficient.
+* **SQL Injection** - To prevent SQL injection, PreparedStatements were used with bind variables `?` instead of using regular statements that concatenate runtime data.  Using the prepared statement also prevents the query from having to parse, compile, and execute each time, making the program more efficient.
 
-* **Join, Where, and Like**
-Film categories, actors, and languages were in their own tables.  Sometimes, a single `JOIN` was used and a `ON` statement added to compare two columns.  Other times, there was an association table, and two `JOIN` and `ON` statements had to be added in order to compare columns.
+* **Join, Where, and Like** - Film categories, actors, and languages were in their own tables.  Sometimes, a single `JOIN` was used and an `ON` statement added to compare two columns.  Other times, there was an association table, and two `JOIN` and `ON` statements had to be added in order to compare columns.
 
 The `WHERE` clause was used to filter predicates.  For example it was used to find film's id and return data for the given id, as seen below.
 ```actors = new ArrayList<>();
@@ -89,20 +89,18 @@ The `WHERE` clause was used to filter predicates.  For example it was used to fi
 
   `LIKE` was used to compare wildcards.  In this program, it compared the user entered keyword with film titles and descriptions.
 
-* **Referential Integrity (RI)**
-RI was used when joining tables.  The project used keys to connect tables.  For example, to add the film category, three tables were connected by using an association table.  All primary and foreign keys had to agree with each other in order for this connection to work.
+* **Referential Integrity (RI)** - RI was applied when joining tables.  The project used keys to connect tables.  For example, to add the film category, three tables were connected by using an association table as the middle man.  All primary and foreign keys had to agree with each other in order for this connection to work.
 
-* **JUnit 5**
-A few test cases were written for practice, so in the future unit testing won't be as trivial.  This was done after the program was run and debugged, so it wasn't as useful as it could have been.
+* **JUnit 5** - A few test cases were written for practice, so in the future unit testing won't be as trivial.  This was done after the program was run and debugged, so it wasn't as useful as it could have been.
 
 
 ### Lessons Learned
-The biggest lesson learned from this project was learning the SQL language.  It was important for me to write out the syntax in Atom and then paste it into mySQL in order to determine if the syntax was right.  Sometimes I had spelling errors or I wanted to use  `show` instead of `select`, or `in` seemed like a more intuitive word than `from`.  It would have been very hard to debug the syntax directly from Eclipse.  If it didn't work in the mySQL console, I knew something was wrong with what I had typed.
+The biggest lesson learned from this project was learning the SQL language.  It was important for me to write out the syntax in Atom and then paste it into mySQL in order to determine if the syntax was right.  Sometimes I had spelling errors, I wanted to use  `show` instead of `select`, or `in` seemed like a more intuitive word than `from`.  It would have been very hard to debug the syntax directly from Eclipse.  If it didn't work in the mySQL console, I knew something was wrong with what I had typed.
 
-Joining tables together with primary and foreign keys was also something that I had to wrap my mind around.  
+Joining tables together with primary and foreign keys was also something that I had to wrap my mind around.  There were a few instances where the keys did not match and there was an issue with referential integrity.
 
-Beyond that the assignment expanded on how to connect a database and retrieve information to use in an application that used object oriented programming.
+Beyond that, the assignment expanded on how to connect a database and retrieve information to use in an application that used object oriented programming.
 
 
 ### Future Implementation
-The sdvid database contains many tables that were not used.  A store and inventory class were created only to display the inventory of certain films.  A future menu item could list all the movies at a store and so on.  Also, tables exist with employees, mangers, and their addresses.  An entire management program could be formed with this.  Obviously, that is much out of the scope of this project.  Later, CRUD principles could be added to add or update films and a front end could be added.  The sky is the limit with this one - not that film stores are really around anymore!
+The sdvid database contains many tables that were not used.  A store and inventory class were created only to display the inventory of certain films.  A future menu item could list all the movies at a store.  Also, tables exist with employees, mangers, and their addresses.  An entire management program could be created with this.  Obviously, that is out of the scope of this project.  Later, the other CRUD principles could be included to add or update films, and a front end could be added.  The sky is the limit with this one - not that film stores are really around anymore!
