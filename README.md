@@ -51,6 +51,8 @@ Choosing exit will terminate the program.
 
 
 ### How to Run
+Access to the sdvid database is needed to run the program.
+
 Download the files from the GitHub repository.
 
 Open the files in an Java Integrated Development Environment such as Eclipse (free).
